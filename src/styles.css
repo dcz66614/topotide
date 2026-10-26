@@ -1,0 +1,365 @@
+/*
+ * T011 — 全局布局与主题（PROJECT_BOOK.md §6.1/§6.2/§12；IMPLEMENTATION_PLAN.md
+ * task card P0001-T011）。
+ *
+ * 色板（颜色只做辅助，数值与文字并显）：
+ *   页面深海蓝 #0A1421 · 面板 #111F31 · 文字 #E6EFF7 · 强调青 #46D6CD ·
+ *   事件金 #F1BE60 · 异常红 #F27676。
+ * 桌面三列：左工具栏 230–260px、中间画布自适应且接近正方形、右实验面板
+ * 360–420px 可滚动；顶栏 64px；窄屏单列堆叠（工具栏在上、面板在画布下），
+ * 画布容器绝不横向溢出；所有焦点轮廓 :focus-visible 可见。
+ */
+
+:root {
+  color-scheme: dark;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #0a1421;
+  color: #e6eff7;
+}
+
+/* 焦点轮廓必须可见（§6.2 无障碍）。 */
+:focus-visible {
+  outline: 2px solid #46d6cd;
+  outline-offset: 2px;
+}
+
+.appShell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------------- 顶栏（64px） ---------------- */
+
+.appHeader {
+  flex: 0 0 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 16px;
+  background: #111f31;
+  border-bottom: 1px solid rgba(70, 214, 205, 0.35);
+}
+
+.appTitle {
+  margin: 0;
+  font-size: 1.3rem;
+  letter-spacing: 0.05em;
+}
+
+.headerSubtitle {
+  margin: 0;
+  margin-right: auto;
+  color: #9fb3c8;
+  font-size: 0.8rem;
+}
+
+.statusChip {
+  padding: 3px 10px;
+  border: 1px solid rgba(70, 214, 205, 0.5);
+  border-radius: 999px;
+  color: #46d6cd;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.statusChipError {
+  border-color: #f27676;
+  color: #f27676;
+}
+
+/* ---------------- 三列布局 ---------------- */
+
+.appColumns {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 244px minmax(0, 1fr) 400px;
+  gap: 12px;
+  padding: 12px;
+  align-items: start;
+}
+
+/* 左栏「雕塑工具」（230–260px） */
+.toolbarPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  background: #111f31;
+  border: 1px solid rgba(70, 214, 205, 0.25);
+  border-radius: 10px;
+}
+
+.panelHeading {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #46d6cd;
+}
+
+.fieldGroup {
+  margin: 0;
+  padding: 8px;
+  border: 1px solid rgba(230, 239, 247, 0.16);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.fieldGroup legend {
+  padding: 0 4px;
+  color: #9fb3c8;
+  font-size: 0.76rem;
+}
+
+.radioColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.radioRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.radioRow input {
+  accent-color: #46d6cd;
+}
+
+.fieldLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #9fb3c8;
+  font-size: 0.8rem;
+  min-width: 0;
+}
+
+.fieldSelect,
+.numberInput {
+  background: #0a1421;
+  color: #e6eff7;
+  border: 1px solid rgba(70, 214, 205, 0.4);
+  border-radius: 6px;
+  padding: 4px 6px;
+  font: inherit;
+  font-size: 0.85rem;
+  min-width: 0;
+}
+
+.fieldSelect:disabled {
+  opacity: 0.5;
+}
+
+.numberField {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+/* 超界提示（离焦前）用事件金；普通帮助行用灰蓝。 */
+.fieldWarn {
+  color: #f1be60;
+  font-size: 0.74rem;
+}
+
+.fieldHint {
+  margin: 0;
+  color: #9fb3c8;
+  font-size: 0.74rem;
+}
+
+.toolButton {
+  background: rgba(70, 214, 205, 0.12);
+  color: #e6eff7;
+  border: 1px solid rgba(70, 214, 205, 0.45);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.toolButton:hover:enabled {
+  background: rgba(70, 214, 205, 0.24);
+}
+
+.toolButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.buttonRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.fileInput {
+  color: #9fb3c8;
+  font-size: 0.78rem;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.levelRange {
+  width: 100%;
+  min-width: 0;
+  accent-color: #46d6cd;
+}
+
+/* 中栏「地貌舞台」：自适应、接近正方形、绝不横向溢出。 */
+.stageColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.canvasHolder {
+  width: 100%;
+  max-width: min(100%, 74vh);
+  margin: 0 auto;
+  min-width: 0;
+}
+
+/* 右栏「实验面板」（360–420px），内部滚动，不遮画布。 */
+.sidePanel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  background: #111f31;
+  border: 1px solid rgba(70, 214, 205, 0.25);
+  border-radius: 10px;
+  max-height: calc(100vh - 88px);
+  min-width: 0;
+}
+
+.tabRow {
+  display: flex;
+  gap: 6px;
+}
+
+.tabButton {
+  flex: 1 1 0;
+  background: transparent;
+  color: #9fb3c8;
+  border: 1px solid rgba(230, 239, 247, 0.22);
+  border-radius: 8px;
+  padding: 6px 4px;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tabButton[aria-pressed='true'] {
+  background: #46d6cd;
+  border-color: #46d6cd;
+  color: #0a1421;
+  font-weight: 600;
+}
+
+.panelBody {
+  overflow-y: auto;
+  min-height: 0;
+  padding-right: 2px;
+}
+
+/* 基线对照空态（T012 之前的占位）。 */
+.emptyState {
+  margin: 0;
+  padding: 28px 8px;
+  text-align: center;
+  color: #9fb3c8;
+}
+
+/* ---------------- 底部状态区 ---------------- */
+
+.statusBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 16px;
+  background: #111f31;
+  border-top: 1px solid rgba(70, 214, 205, 0.25);
+  font-size: 0.85rem;
+}
+
+.statItem {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+
+.statLabel {
+  color: #9fb3c8;
+  font-size: 0.76rem;
+  white-space: nowrap;
+}
+
+.statValue {
+  color: #46d6cd;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-weight: 600;
+}
+
+/* 选中事件行使用事件金。 */
+.statSelected {
+  color: #f1be60;
+  font-size: 0.8rem;
+}
+
+.statusAlert {
+  color: #f27676;
+  font-size: 0.8rem;
+}
+
+/* ---------------- 窄屏堆叠（600–1099px） ---------------- */
+
+@media (max-width: 1099px) {
+  .appColumns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* DOM 顺序即堆叠顺序：工具栏在上、画布居中、实验面板落到画布下方。 */
+  .sidePanel {
+    max-height: none;
+  }
+
+  .panelBody {
+    overflow: visible;
+  }
+}
+
+/* <600px 只保证核心查看与触摸滑块可用（§6.1）。 */
+@media (max-width: 599px) {
+  .appHeader {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 64px;
+    padding: 8px 12px;
+  }
+
+  .appColumns {
+    padding: 8px;
+    gap: 8px;
+  }
+}

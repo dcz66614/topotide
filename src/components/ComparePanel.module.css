@@ -1,0 +1,170 @@
+/* T012 — 基线对照面板样式（组件级 CSS module；IMPLEMENTATION_PLAN.md P0001-T012）。
+ * 颜色遵循 PROJECT_BOOK.md §6.1：面板 #111F31、文字 #E6EFF7、强调青 #46D6CD、
+ * 事件金 #F1BE60。当前曲线用青色实线，基线曲线用金色虚线，图例形状+颜色双通道。
+ * 只写局部样式，不改全局 styles.css（App 复用既有 .toolButton/.buttonRow）。 */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(70, 214, 205, 0.35);
+  border-radius: 10px;
+  background: #111f31;
+  color: #e6eff7;
+}
+
+.title {
+  margin: 0;
+  font: 600 14px/1.4 system-ui, sans-serif;
+}
+
+/* ---- 空态引导：只有文字，绝不渲染 0 vs 0 的假对照 ---- */
+
+.guide {
+  margin: 0;
+  font: 13px/1.7 system-ui, sans-serif;
+  color: #cfe0ee;
+  overflow-wrap: anywhere;
+}
+
+.hint {
+  margin: 0;
+  font: 12px/1.6 system-ui, sans-serif;
+  color: #9fb3c8;
+  overflow-wrap: anywhere;
+}
+
+/* ---- 冻结后的摘要与曲线 ---- */
+
+.meta {
+  margin: 0;
+  color: #9fb3c8;
+  font: 12px/1.6 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  overflow-wrap: anywhere;
+}
+
+.summaryTable {
+  width: 100%;
+  border-collapse: collapse;
+  font: 12px/1.5 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+.metricHead,
+.currentHead,
+.baselineHead {
+  padding: 4px 6px;
+  text-align: left;
+  border-bottom: 1px solid rgba(230, 239, 247, 0.22);
+  color: #9fb3c8;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.currentHead {
+  color: #46d6cd;
+}
+
+.baselineHead {
+  color: #f1be60;
+}
+
+.metricCell {
+  padding: 5px 6px;
+  text-align: left;
+  font-weight: 400;
+  color: #cfe0ee;
+  border-bottom: 1px solid rgba(230, 239, 247, 0.08);
+  overflow-wrap: anywhere;
+}
+
+.currentCell,
+.baselineCell {
+  padding: 5px 6px;
+  text-align: right;
+  border-bottom: 1px solid rgba(230, 239, 247, 0.08);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.currentCell {
+  color: #46d6cd;
+}
+
+.baselineCell {
+  color: #f1be60;
+}
+
+.chartBlock {
+  margin: 0;
+  min-width: 0;
+}
+
+.chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid rgba(230, 239, 247, 0.14);
+  border-radius: 6px;
+  background:
+    linear-gradient(90deg, rgba(230, 239, 247, 0.1) 1px, transparent 1px) 0 0 / 20% 100%,
+    #0a1421;
+}
+
+/* 当前：青色实线；基线：金色虚线。颜色 + 线型双通道，不只靠色相。 */
+.lineCurrent {
+  stroke: #46d6cd;
+  stroke-width: 2;
+}
+
+.lineBaseline {
+  stroke: #f1be60;
+  stroke-width: 2;
+  stroke-dasharray: 7 5;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  margin-top: 6px;
+  font: 12px/1.5 system-ui, sans-serif;
+  color: #cfe0ee;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatchCurrent,
+.swatchBaseline {
+  display: inline-block;
+  width: 22px;
+  height: 0;
+  border-top: 3px solid #46d6cd;
+  border-radius: 2px;
+}
+
+.swatchBaseline {
+  border-top-style: dashed;
+  border-top-color: #f1be60;
+}
+
+.axisNote {
+  color: #9fb3c8;
+  font: 11px/1.5 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+/* ---- App 基线对照 tab 的排布（App 复用全局 .toolButton/.buttonRow，
+ *      冻结/清除按钮的布局间距在这里补齐；styles.css 不动） ---- */
+
+.baselineTab {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}

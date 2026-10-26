@@ -1,0 +1,74 @@
+/* T008 — TerrainCanvas stage styles (component-scoped CSS module).
+ * Colours follow PROJECT_BOOK.md §6.1: page #0A1421, panels #111F31,
+ * text #E6EFF7, accent cyan #46D6CD, event gold #F1BE60. No global CSS here. */
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(70, 214, 205, 0.35);
+  border-radius: 10px;
+  background: #0a1421;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  touch-action: none; /* keep page scroll out of a brush stroke (§6.3) */
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: crosshair;
+}
+
+.tooltip {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  transform: translate(10px, -50%);
+  padding: 2px 8px;
+  border: 1px solid rgba(70, 214, 205, 0.5);
+  border-radius: 6px;
+  background: rgba(10, 20, 33, 0.92);
+  color: #e6eff7;
+  font: 12px/1.5 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  white-space: nowrap;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: #9fb3c8;
+  font: 12px/1.4 system-ui, sans-serif;
+}
+
+.swatch {
+  width: 96px;
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #163c62 0%, #2fa9a0 50%, #f1c36e 100%);
+  border: 1px solid rgba(230, 239, 247, 0.25);
+}
+
+.chip {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(230, 239, 247, 0.35);
+}
+
+.note {
+  margin: 0;
+  color: #8fa6bd;
+  font: 12px/1.5 system-ui, sans-serif;
+}

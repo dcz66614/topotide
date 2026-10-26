@@ -1,0 +1,219 @@
+/* T009 — 寿命条码 / 事件解释共享面板样式（组件级 CSS module）。
+ * 颜色遵循 PROJECT_BOOK.md §6.1：页面 #0A1421、面板 #111F31、文字 #E6EFF7、
+ * 强调青 #46D6CD、事件金 #F1BE60。只写局部样式，不改全局 styles.css。 */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(70, 214, 205, 0.35);
+  border-radius: 10px;
+  background: #111f31;
+  color: #e6eff7;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.panelTitle {
+  margin: 0;
+  font: 600 14px/1.4 system-ui, sans-serif;
+}
+
+.panelMeta {
+  color: #9fb3c8;
+  font: 12px/1.4 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+/* ---- tau 控件（只上报意图，onTauChange） ---- */
+
+.tauControl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tauLabel {
+  color: #9fb3c8;
+  font: 12px/1.4 system-ui, sans-serif;
+}
+
+.tauRange {
+  flex: 1 1 120px;
+  min-width: 96px;
+  accent-color: #46d6cd;
+}
+
+.tauValue {
+  color: #46d6cd;
+  font: 12px/1.4 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+/* ---- 条码列表 ---- */
+
+.barList,
+.eventList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.barItem,
+.eventItem {
+  min-width: 0;
+}
+
+/* 每条条码是一颗原生 button：可 Tab、可 Enter/Space，焦点轮廓必须可见。 */
+.barRow {
+  display: grid;
+  grid-template-columns: minmax(72px, auto) 1fr;
+  gap: 4px 10px;
+  align-items: center;
+  width: 100%;
+  padding: 6px 8px;
+  text-align: left;
+  border: 1px solid rgba(230, 239, 247, 0.14);
+  border-radius: 8px;
+  background: #0a1421;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.barRow:hover {
+  border-color: rgba(70, 214, 205, 0.55);
+}
+
+/* 选中态：同级高亮，边框 + 底色双重提示（不只靠颜色）。 */
+.barRowSelected {
+  border-color: #46d6cd;
+  background: rgba(70, 214, 205, 0.16);
+  box-shadow: inset 3px 0 0 #46d6cd;
+}
+
+.barTitle {
+  grid-column: 1;
+  font: 12px/1.4 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  white-space: nowrap;
+}
+
+.barTrack {
+  grid-column: 2;
+  position: relative;
+  height: 14px;
+  min-width: 0;
+  border-radius: 3px;
+  background: rgba(230, 239, 247, 0.06);
+  /* 横轴 0..255 的刻度参考线。 */
+  background-image:
+    linear-gradient(90deg, rgba(230, 239, 247, 0.18) 1px, transparent 1px);
+  background-size:
+    calc(100% / 5) 100%;
+}
+
+.barFill {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #2fa9a0, #46d6cd);
+}
+
+/* essential 条：0 → birth 的带箭头虚线，绝不当成 death=0。 */
+.barFillEssential {
+  background: none;
+  border-top: 2px dashed #f1be60;
+  border-radius: 0;
+}
+
+.barFillEssential::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  right: -1px;
+  border-left: 7px solid #f1be60;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+
+.barText,
+.barTextEssential {
+  grid-column: 1 / -1;
+  font: 12px/1.5 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  color: #cfe0ee;
+  overflow-wrap: anywhere;
+}
+
+.barTextEssential {
+  color: #f1be60;
+}
+
+/* ---- 事件列表 ---- */
+
+.eventRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 8px;
+  border: 1px solid rgba(230, 239, 247, 0.14);
+  border-radius: 8px;
+  background: #0a1421;
+}
+
+.eventRowSelected {
+  border-color: #f1be60;
+  background: rgba(241, 190, 96, 0.14);
+  box-shadow: inset 3px 0 0 #f1be60;
+}
+
+.eventText {
+  margin: 0;
+  font: 12px/1.6 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  color: #cfe0ee;
+  overflow-wrap: anywhere;
+}
+
+.eventActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.eventButton {
+  padding: 4px 10px;
+  border: 1px solid rgba(241, 190, 96, 0.5);
+  border-radius: 6px;
+  background: rgba(241, 190, 96, 0.08);
+  color: #f1be60;
+  font: 12px/1.4 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.eventButton:hover:not(:disabled) {
+  background: rgba(241, 190, 96, 0.2);
+}
+
+.eventButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ---- 键盘焦点：所有按钮/滑块必须有清晰可见的焦点轮廓 ---- */
+
+.barRow:focus-visible,
+.eventButton:focus-visible,
+.tauRange:focus-visible {
+  outline: 2px solid #46d6cd;
+  outline-offset: 2px;
+}
